@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/react-mesto-auth/static/css/main.190fc6fc.css",
-    "main.js": "/react-mesto-auth/static/js/main.7fea42c4.js",
+    "main.css": "/react-mesto-auth/static/css/main.b2e3df15.css",
+    "main.js": "/react-mesto-auth/static/js/main.a2d387e8.js",
     "static/media/Inter-Medium.woff": "/react-mesto-auth/static/media/Inter-Medium.9053572c46aeb4b16caa.woff",
     "static/media/Inter-Black.woff": "/react-mesto-auth/static/media/Inter-Black.c6938660eec019fefd68.woff",
     "static/media/Inter-Regular.woff": "/react-mesto-auth/static/media/Inter-Regular.8c206db99195777c6769.woff",
@@ -12,15 +12,17 @@
     "index.html": "/react-mesto-auth/index.html",
     "static/media/icon_like-disable.svg": "/react-mesto-auth/static/media/icon_like-disable.1ad06e85f169668a1f36.svg",
     "static/media/icon_trash.svg": "/react-mesto-auth/static/media/icon_trash.e3c42771bff3aaa52f76.svg",
+    "static/media/UnionErr.svg": "/react-mesto-auth/static/media/UnionErr.df8eddf661ff88f2d0efd3d570d14309.svg",
+    "static/media/Union.svg": "/react-mesto-auth/static/media/Union.1b6082f862eac35e2514460237d96ecc.svg",
     "static/media/icon_like-activated.svg": "/react-mesto-auth/static/media/icon_like-activated.35948469632d0421d697.svg",
     "static/media/icon_close.svg": "/react-mesto-auth/static/media/icon_close.973e77374abfb705de40.svg",
     "static/media/icon_pen.svg": "/react-mesto-auth/static/media/icon_pen.6c7bf05444b9793fdf6e.svg",
     "static/media/icon_plus.svg": "/react-mesto-auth/static/media/icon_plus.bed8c136e13907f5eefb.svg",
-    "main.190fc6fc.css.map": "/react-mesto-auth/static/css/main.190fc6fc.css.map",
-    "main.7fea42c4.js.map": "/react-mesto-auth/static/js/main.7fea42c4.js.map"
+    "main.b2e3df15.css.map": "/react-mesto-auth/static/css/main.b2e3df15.css.map",
+    "main.a2d387e8.js.map": "/react-mesto-auth/static/js/main.a2d387e8.js.map"
   },
   "entrypoints": [
-    "static/css/main.190fc6fc.css",
-    "static/js/main.7fea42c4.js"
+    "static/css/main.b2e3df15.css",
+    "static/js/main.a2d387e8.js"
   ]
 }
