@@ -7,7 +7,6 @@ export default memo(function Card(props) {
   const isOwner = card.owner._id === currentUser._id;
   const isLiked = card.likes.some((item) => item._id === currentUser._id);
 
-  console.log('render Card')
   return (
     <li className="cards__card card">
       <img
@@ -22,7 +21,6 @@ export default memo(function Card(props) {
           className="card__delete"
           onClick={() => {
             onCardDelete(card)
-            // setCurrentCard(card)
           }}
         />
       )}

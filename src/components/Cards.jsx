@@ -4,7 +4,6 @@ import Card from "./Card";
 export default memo(function Cards(props) {
   const { cards, onCardClick, handleCardLikeSubmit, onCardDeleteClick } = props;
 
-  console.log('render CARDS')
   function renderCards() {
     return cards.map((card) => (
       <Card

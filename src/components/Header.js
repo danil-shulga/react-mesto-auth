@@ -1,7 +1,8 @@
-import React from 'react';
-import logo from '../images/icon/logo_wight.svg';
+import React from "react";
+import logo from "../images/icon/logo_wight.svg";
+import { Link } from "react-router-dom";
 
-function Header(props) {
+function Header({ link, userLogin, buttonText, setJWT }) {
   return (
     <header className="header">
       <img
@@ -10,6 +11,17 @@ function Header(props) {
         alt="лого сайта"
         draggable="false"
       />
+      <span className="header__user">{userLogin}</span>
+      <Link
+        className="header__link"
+        onClick={() => {
+          setJWT(null)
+          localStorage.removeItem('user');
+        }}
+        to={link}
+      >
+        {buttonText}
+      </Link>
     </header>
   );
 }

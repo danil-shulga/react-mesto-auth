@@ -1,10 +1,15 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
 import api from "../utils/api";
 import Header from "./Header.js";
 import Main from "./Main.js";
 import Footer from "./Footer.js";
 import CurrentUserContext from "../contexts/CurrentUserContext.js";
 import Modals from "./Modals/Modals.jsx";
+import Login from "./Login";
+import Register from "./Register";
+import ProtectedRoute from "./ProtectedRoute";
+import signApi from "../utils/signApi";
 
 function App() {
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
@@ -12,9 +17,75 @@ function App() {
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
   const [isConfirmPopupOpen, setIsConfirmPopupOpen] = useState(false);
   const [isImagePopupOpen, setIsImagePopupOpen] = useState(false);
+  const [isInfoTooltipOpen, setIsInfoTooltipOpen] = useState(false);
+  const [InfoTooltipData, setInfoTooltipData] = useState({
+    title: "",
+    img: "",
+  });
   const [selectedCard, setSelectedCard] = useState({});
   const [currentUser, setCurrentUser] = useState({});
   const [cards, setCards] = useState([]);
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [loggedInData, setLoggedInData] = useState({});
+  // ни как не получалось реализовать выход из аккаунта без перезагрузки страницы, получилось только таким костылем
+  const [JWT, setJWT] = useState(
+    localStorage.getItem("user")
+      ? JSON.parse(localStorage.getItem("user")).token
+      : "null"
+  );
+
+  function handleSignUpSubmit(e) {
+    e.preventDefault();
+    signApi
+      .signup(loggedInData)
+      .then((res) => {
+        setInfoTooltipData({
+          title: "Вы успешно зарегистрировались!",
+          img: "acceptImg",
+        });
+        setIsInfoTooltipOpen(true);
+      })
+      .catch((res) => {
+        setInfoTooltipData({
+          title: `Что-то пошло не так!Попробуйте ещё раз.`,
+          img: "errorImg",
+        });
+        setIsInfoTooltipOpen(true);
+        console.error("ошибка при регистрации", res);
+      });
+  }
+
+  function handleSignInSubmit(e) {
+    e.preventDefault();
+    console.log(loggedInData);
+    signApi
+      .signin(loggedInData)
+      .then((res) => {
+        localStorage.setItem(
+          "user",
+          JSON.stringify({
+            token: res.token,
+          })
+        );
+        setJWT(JSON.parse(localStorage.getItem("user")).token);
+        setLoggedIn(true);
+      })
+      .catch((res) => console.error("ошибка при входе", res));
+  }
+
+  console.log(JWT);
+  useEffect(() => {
+    signApi
+      .checkToken(JWT)
+      .then((res) => {
+        setLoggedInData({ ...loggedInData, login: res.data.email });
+        setLoggedIn(true);
+      })
+      .catch((res) => {
+        setLoggedIn(false);
+        console.error("токены не совпадают", res);
+      });
+  }, [JWT]);
 
   // получение данных текущего пользователя
   useEffect(() => {
@@ -118,6 +189,8 @@ function App() {
     isAddPlacePopupOpen,
     isConfirmPopupOpen,
     isImagePopupOpen,
+    isInfoTooltipOpen,
+    InfoTooltipData,
     closeAllPopups,
     selectedCard,
   };
@@ -150,25 +223,66 @@ function App() {
     setIsAddPlacePopupOpen(false);
     setIsConfirmPopupOpen(false);
     setIsImagePopupOpen(false);
+    setIsInfoTooltipOpen(false);
   }
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="body">
         <div className="page">
-          <Header />
-          <Main
-            cards={cards}
-            setCards={setCards}
-            handleCardLikeSubmit={handleCardLikeSubmit}
-            onCardDeleteClick={handleCardDeleteClick}
-            onEditAvatar={handleEditAvatarClick}
-            onEditProfile={handleEditProfileClick}
-            onAddPlace={handleAddPlaceClick}
-            onCardClick={handleCardClick}
-          />
+          <Routes>
+            <Route
+              path="*"
+              element={
+                <>
+                  <Header
+                    userLogin={loggedInData.login}
+                    setJWT={setJWT}
+                    link="/sign-in"
+                    buttonText="Выйти"
+                  />
+                  <ProtectedRoute
+                    loggedIn={loggedIn}
+                    element={Main}
+                    cards={cards}
+                    setCards={setCards}
+                    handleCardLikeSubmit={handleCardLikeSubmit}
+                    onCardDeleteClick={handleCardDeleteClick}
+                    onEditAvatar={handleEditAvatarClick}
+                    onEditProfile={handleEditProfileClick}
+                    onAddPlace={handleAddPlaceClick}
+                    onCardClick={handleCardClick}
+                  />
+                </>
+              }
+            />
+            <Route
+              path="/sign-in"
+              element={
+                <>
+                  <Header link="/sign-up" buttonText="Регистрация" />
+                  <Login
+                    loggedIn={loggedIn}
+                    setLoggedInData={setLoggedInData}
+                    handleAuthorizationFormSubmit={handleSignInSubmit}
+                  />
+                </>
+              }
+            />
+            <Route
+              path="/sign-up"
+              element={
+                <>
+                  <Header link="/sign-in" buttonText="Войти" />
+                  <Register
+                    setLoggedInData={setLoggedInData}
+                    handleAuthorizationFormSubmit={handleSignUpSubmit}
+                  />
+                </>
+              }
+            />
+          </Routes>
           <Footer />
-
           {/* подключение всех модальных окон одним компонентом */}
           <Modals {...popupsProps} />
         </div>

@@ -4,6 +4,7 @@ import EditProfilePopup from "./EditProfilePopup";
 import AddPlacePopup from "./AddPlacePopup";
 import ImagePopup from "./ImagePopup";
 import ConfirmPopup from "./ConfirmPopup";
+import InfoTooltip from "./InfoTooltip";
 
 function Modals(props) {
   const {
@@ -18,6 +19,8 @@ function Modals(props) {
     isAddPlacePopupOpen,
     isConfirmPopupOpen,
     isImagePopupOpen,
+    isInfoTooltipOpen,
+    InfoTooltipData,
     closeAllPopups,
     selectedCard,
   } = props;
@@ -55,6 +58,8 @@ function Modals(props) {
         isOpen={isConfirmPopupOpen}
         onClose={closeAllPopups}
       />
+
+      <InfoTooltip isOpen={isInfoTooltipOpen} onClose={closeAllPopups} InfoTooltipData={InfoTooltipData} />
     </>
   );
 }
