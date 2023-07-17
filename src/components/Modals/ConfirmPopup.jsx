@@ -5,6 +5,7 @@ function ConfirmPopup({ isOpen, handleCardDeleteSubmit, onClose }) {
   return (
     <PopupWithForm
       isOpen={isOpen}
+      isValid={true}
       onClose={onClose}
       onSubmit={handleCardDeleteSubmit}
       name="confirm"

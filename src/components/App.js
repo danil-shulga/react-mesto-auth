@@ -73,7 +73,6 @@ function App() {
       .catch((res) => console.error("ошибка при входе", res));
   }
 
-  console.log(JWT);
   useEffect(() => {
     signApi
       .checkToken(JWT)

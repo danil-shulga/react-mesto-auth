@@ -1,52 +1,48 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import PopupWithForm from "./PopupWithForm";
+import useFormAndValidation from "../../hooks/useFormAndValidation";
 
 function AddPlacePopup(props) {
-  const [inputsValue, setInputsValue] = useState({ cardTitle: "", imgUrl: "" });
   const { handleAddPlaceSubmit, isAddPlacePopupOpen, closeAllPopups } = props;
-
-  function handleInputChange(e) {
-    setInputsValue({ ...inputsValue, [e.target.name]: e.target.value });
-  }
-
-  useEffect(() => {
-    setInputsValue({ cardTitle: "", imgUrl: "" });
-  }, [isAddPlacePopupOpen]);
+  const { values, handleChange, errors, isValid, resetForm } =
+    useFormAndValidation();
 
   return (
     <PopupWithForm
       name="card-add"
       title="Новое место"
       isOpen={isAddPlacePopupOpen}
+      isValid={isValid}
+      resetForm={resetForm}
       onClose={closeAllPopups}
-      onSubmit={(e) => handleAddPlaceSubmit(e, inputsValue)}
+      onSubmit={(e) => handleAddPlaceSubmit(e, values)}
     >
       <input
         id="card-title"
         className="popup__input popup__input_card-title"
         name="cardTitle"
         type="text"
-        value={inputsValue.cardTitle}
-        onChange={handleInputChange}
+        value={values.cardTitle}
+        onChange={handleChange}
         placeholder="Название места"
         autoComplete="off"
         minLength={2}
         maxLength={30}
         required
       />
-      <span className="popup__error card-title-error" />
+      <span className="popup__error">{errors.cardTitle}</span>
       <input
         id="img-url"
         className="popup__input popup__input_img-url"
         name="imgUrl"
         type="url"
-        value={inputsValue.imgUrl}
-        onChange={handleInputChange}
+        value={values.imgUrl}
+        onChange={handleChange}
         placeholder="Ссылка на фото"
         autoComplete="off"
         required
       />
-      <span className="popup__error img-url-error" />
+      <span className="popup__error">{errors.imgUrl}</span>
     </PopupWithForm>
   );
 }

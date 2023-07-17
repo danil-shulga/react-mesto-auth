@@ -15,8 +15,10 @@ function Header({ link, userLogin, buttonText, setJWT }) {
       <Link
         className="header__link"
         onClick={() => {
-          setJWT(null)
-          localStorage.removeItem('user');
+          if (setJWT) {
+            setJWT(null)
+            localStorage.removeItem('user');
+          }
         }}
         to={link}
       >

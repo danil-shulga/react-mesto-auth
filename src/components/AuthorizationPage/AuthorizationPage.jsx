@@ -3,6 +3,7 @@ import { Link, Navigate } from "react-router-dom";
 
 // хотел попрактиковаться с модульными стилями и по этому решил в этой работе реализовать тх таким образом
 import styles from "./AuthorizationPage.module.css";
+import useFormAndValidation from "../../hooks/useFormAndValidation";
 
 function AuthorizationForm(props) {
   const {
@@ -13,15 +14,13 @@ function AuthorizationForm(props) {
     showSingInLink,
     loggedIn,
   } = props;
-  const [inputValues, setInputValues] = useState({ email: "", password: "" });
 
-  function handleInputValuesChange(e) {
-    setInputValues({ ...inputValues, [e.target.name]: e.target.value });
-  }
+  const { values, handleChange, errors, isValid, resetForm } =
+    useFormAndValidation();
 
   useEffect(() => {
-    setLoggedInData(inputValues);
-  }, [inputValues, setLoggedInData]);
+    setLoggedInData(values);
+  }, [values, setLoggedInData]);
 
   return (
     <>
@@ -31,24 +30,34 @@ function AuthorizationForm(props) {
         <form className={styles.form}>
           <input
             className={styles.input}
-            value={inputValues.email}
-            onChange={handleInputValuesChange}
+            value={values.email || ""}
+            onChange={handleChange}
             name="email"
             type="email"
             placeholder="Email"
+            required
+            minLength={6}
           />
+          <span className="popup__error">{errors.email}</span>
           <input
             className={styles.input}
-            value={inputValues.password}
-            onChange={handleInputValuesChange}
+            value={values.password || ""}
+            onChange={handleChange}
             name="password"
             type="password"
             placeholder="Пароль"
+            required
+            minLength={4}
           />
+          <span className="popup__error">{errors.password}</span>
           <button
             className={styles.button}
             type="submit"
-            onClick={handleAuthorizationFormSubmit}
+            onClick={(e) => {
+              handleAuthorizationFormSubmit(e);
+              resetForm();
+            }}
+            disabled={!isValid}
           >
             {buttonText}
           </button>

@@ -3,11 +3,12 @@
   min-height: 30px;
   margin-top: 4px;
 
+  text-align: left;
   font-size: 12px;
   line-height: 1.2;
   color: #f00;
 
-  visibility: hidden;
+  /* visibility: hidden; */
 }
 
 @media (max-width:580px) {
